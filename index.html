@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Century Burger | Order Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Top navigation -->
+  <nav class="navbar navbar-expand-md navbar-dark cb-navbar sticky-top">
+    <div class="container-fluid px-3 px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#home" data-route="home">
+        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width:42px;height:42px;background:var(--cb-orange)">
+          <svg viewBox="0 0 40 40" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 18a14 9 0 0 1 28 0z" fill="#fff8ef"/>
+            <circle cx="14" cy="12" r="1.3" fill="#fff8ef"/>
+            <circle cx="20" cy="10" r="1.3" fill="#fff8ef"/>
+            <circle cx="26" cy="12" r="1.3" fill="#fff8ef"/>
+            <rect x="5" y="18.5" width="30" height="3" rx="1.2" fill="#fbbf24"/>
+            <rect x="5" y="22" width="30" height="4" fill="#5b2613"/>
+            <rect x="5" y="26.5" width="30" height="2.6" rx="1.2" fill="#22c55e"/>
+            <path d="M5 29.5h30v1.5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="#fff8ef"/>
+          </svg>
+        </span>
+        <span>
+          <strong class="d-block">Century Burger</strong>
+          <small>Order online</small>
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMain">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link active" href="#home" data-route="home">Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tracking" data-route="tracking">Track Order</a></li>
+          <li class="nav-item"><a class="nav-link" href="#history" data-route="history">My Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin/index.html"><i class="fa-solid fa-user-shield me-1"></i>Admin</a></li>
+          <li class="nav-item">
+            <a class="nav-link cart-fab" href="#checkout" data-route="checkout">
+              <i class="fa-solid fa-cart-shopping me-1"></i><span class="d-lg-none">Cart</span>
+              <span class="badge rounded-pill bg-primary" id="cartCount">0</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid px-3 px-lg-4" style="max-width:1280px;">
+
+    <!-- Home / Menu -->
+    <section id="home" class="screen active py-4">
+      <div class="hero-panel row align-items-center g-4 mb-5">
+        <div class="col-lg-6">
+          <p class="hero-eyebrow mb-2">Fast-casual burger ordering system</p>
+          <h1 class="display-font mb-3">Smash burgers, live tracking, and demo checkout — all in one prototype.</h1>
+          <p class="mb-4" style="color:#ffe7d2;max-width:520px;">A click-through prototype for Century Burger showing the customer order flow before full development starts.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#checkout" data-route="checkout" class="btn btn-primary btn-lg px-4">Start Order</a>
+            <a href="admin/index.html" class="btn btn-outline-light btn-lg px-4">View Admin System</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-visual">
+            <img src="assets/img/hero-burger.jpg" alt="Century Burger signature burgers" class="hero-photo">
+            <div class="hero-sales-card">
+              <span class="text-muted-cb small">Today's sales</span>
+              <strong>LKR 91,000</strong>
+              <span class="text-muted-cb small">Mock data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+        <div>
+          <p class="hero-eyebrow mb-1" style="color:var(--cb-orange-dark)">Menu</p>
+          <h2 class="display-font" style="font-size:2.2rem;">Order your favourites</h2>
+        </div>
+        <div class="btn-group flex-wrap" role="group" id="categoryTabs">
+          <button class="btn btn-outline-secondary category-pill active" data-category="All">All</button>
+          <button class="btn btn-outline-secondary category-pill" data-category="Burgers">Burgers</button>
+          <button class="btn btn-outline-secondary category-pill" data-category="Sides">Sides</button>
+          <button class="btn btn-outline-secondary category-pill" data-category="Drinks">Drinks</button>
+          <button class="btn btn-outline-secondary category-pill" data-category="Combos">Combos</button>
+        </div>
+      </div>
+      <div id="menuGrid" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5"></div>
+    </section>
+
+    <!-- Checkout -->
+    <section id="checkout" class="screen py-4">
+      <div class="mb-4">
+        <p class="hero-eyebrow mb-1" style="color:var(--cb-orange-dark)">Cart + Mock Payment</p>
+        <h2 class="display-font" style="font-size:2.2rem;">Checkout</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm rounded-4 p-3 p-lg-4">
+            <h5 class="mb-3">Your Cart</h5>
+            <div id="cartItems" class="list-group list-group-flush"></div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-sm rounded-4 p-3 p-lg-4 summary-panel">
+            <h5 class="mb-3">Order Details</h5>
+            <div class="btn-group w-100 mb-3" role="group">
+              <input type="radio" class="btn-check" name="fulfillment" id="fulfillDelivery" value="Delivery" checked>
+              <label class="btn btn-outline-secondary" for="fulfillDelivery"><i class="fa-solid fa-motorcycle me-1"></i>Delivery</label>
+              <input type="radio" class="btn-check" name="fulfillment" id="fulfillPickup" value="Pickup">
+              <label class="btn btn-outline-secondary" for="fulfillPickup"><i class="fa-solid fa-store me-1"></i>Pickup</label>
+            </div>
+            <label class="form-label fw-semibold small">Delivery Address</label>
+            <input class="form-control mb-3" value="No. 24, Main Street, Colombo">
+            <label class="form-label fw-semibold small">Payment Method</label>
+            <select id="paymentMethod" class="form-select mb-3">
+              <option>Demo card payment</option>
+              <option>Cash on delivery</option>
+            </select>
+
+            <div class="payment-box p-3 mb-3" id="cardBox">
+              <p class="small mb-2"><strong>Demo card.</strong> Use this to show the client the payment flow — no real payment happens.</p>
+              <div class="row g-2">
+                <div class="col-7"><label class="small fw-semibold">Card number</label><input id="cardNumber" class="form-control form-control-sm" value="4242 4242 4242 4242"></div>
+                <div class="col-5"><label class="small fw-semibold">Name</label><input id="cardName" class="form-control form-control-sm" value="Century Demo"></div>
+                <div class="col-6"><label class="small fw-semibold">Expiry</label><input id="cardExpiry" class="form-control form-control-sm" value="12/30"></div>
+                <div class="col-6"><label class="small fw-semibold">CVC</label><input id="cardCvc" class="form-control form-control-sm" value="123"></div>
+              </div>
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                <button type="button" class="btn btn-sm btn-outline-success" id="useDemoCard">Use Success Card</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" id="useFailCard">Use Failed Card</button>
+              </div>
+              <p id="paymentResult" class="payment-result rounded-3 p-2 mt-3 mb-0 bg-white">Ready to process demo payment.</p>
+            </div>
+
+            <div class="d-flex justify-content-between small py-2 border-bottom"><span>Subtotal</span><b id="subtotal">LKR 0</b></div>
+            <div class="d-flex justify-content-between small py-2 border-bottom"><span>Delivery</span><b id="deliveryFee">LKR 0</b></div>
+            <div class="d-flex justify-content-between fs-4 fw-bold py-3"><span>Total</span><b id="grandTotal">LKR 0</b></div>
+            <button id="placeOrder" class="btn btn-primary btn-lg w-100">Pay Demo Card &amp; Place Order</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Order confirmation / tracking -->
+    <section id="tracking" class="screen py-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mx-auto" style="max-width:760px;">
+        <p class="hero-eyebrow mb-1" style="color:var(--cb-orange-dark)">Order Confirmation + Live Tracking</p>
+        <h2 class="display-font mb-2" style="font-size:2rem;">Order CB-1050 Confirmed</h2>
+        <p class="text-muted-cb">Your demo payment is marked as approved and the order is being prepared. This is a mock timeline using sample status data.</p>
+        <div class="row g-2 bg-cream rounded-4 p-3 my-3 text-center">
+          <div class="col-6 col-md-3"><span class="small text-muted-cb d-block">Payment Status</span><strong>Paid by Demo Card</strong></div>
+          <div class="col-6 col-md-3"><span class="small text-muted-cb d-block">Total</span><strong>LKR 2,750</strong></div>
+          <div class="col-6 col-md-3"><span class="small text-muted-cb d-block">Order Type</span><strong>Delivery</strong></div>
+          <div class="col-6 col-md-3"><span class="small text-muted-cb d-block">Order No.</span><strong>CB-1050</strong></div>
+        </div>
+        <div class="stepper my-4">
+          <div class="step done"><i class="fa-solid fa-check-circle d-block mb-1"></i>Received</div>
+          <div class="step done"><i class="fa-solid fa-check-circle d-block mb-1"></i>Preparing</div>
+          <div class="step active-step"><i class="fa-solid fa-motorcycle d-block mb-1"></i>Out for Delivery</div>
+          <div class="step"><i class="fa-regular fa-circle d-block mb-1"></i>Delivered</div>
+        </div>
+        <div class="d-flex align-items-center gap-3 bg-white border rounded-4 p-3">
+          <div class="avatar-circle">KR</div>
+          <div class="flex-grow-1">
+            <strong class="d-block">Kasun Rodrigo</strong>
+            <span class="small text-muted-cb">Rider assigned · 12 minutes away</span>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-phone me-1"></i>Call</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Order history -->
+    <section id="history" class="screen py-4">
+      <div class="mb-4">
+        <p class="hero-eyebrow mb-1" style="color:var(--cb-orange-dark)">Customer Account Concept</p>
+        <h2 class="display-font" style="font-size:2.2rem;">Order History</h2>
+      </div>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col"><div class="card border-0 shadow-sm rounded-4 p-3 h-100 d-flex flex-column">
+          <strong>CB-1039</strong><span class="text-muted-cb small mb-2">Double Smash Burger, Loaded Fries</span>
+          <b class="fs-5 mb-3">LKR 2,900</b><button class="btn btn-outline-secondary btn-sm mt-auto">Order Again</button>
+        </div></div>
+        <div class="col"><div class="card border-0 shadow-sm rounded-4 p-3 h-100 d-flex flex-column">
+          <strong>CB-1018</strong><span class="text-muted-cb small mb-2">Family Burger Combo</span>
+          <b class="fs-5 mb-3">LKR 4,990</b><button class="btn btn-outline-secondary btn-sm mt-auto">Order Again</button>
+        </div></div>
+        <div class="col"><div class="card border-0 shadow-sm rounded-4 p-3 h-100 d-flex flex-column">
+          <strong>CB-1002</strong><span class="text-muted-cb small mb-2">Spicy Volcano Burger, Lime Mojito</span>
+          <b class="fs-5 mb-3">LKR 2,300</b><button class="btn btn-outline-secondary btn-sm mt-auto">Order Again</button>
+        </div></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-charcoal text-light mt-5 py-5">
+    <div class="container-fluid px-3 px-lg-4" style="max-width:1280px;">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <h5 class="display-font mb-2" style="font-size:1.3rem;">Century Burger</h5>
+          <p class="small" style="color:#f6c9a9;">Fast-casual burgers, delivered fast. Ordering &amp; management system demo.</p>
+          <span class="demo-badge">Demo Mode — Placeholder Branding</span>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-uppercase small fw-bold" style="color:var(--cb-orange);">Contact</h6>
+          <p class="small mb-1"><i class="fa-solid fa-phone me-2"></i>077 000 0000</p>
+          <p class="small mb-1"><i class="fa-brands fa-whatsapp me-2"></i>077 000 0000</p>
+          <p class="small mb-1"><i class="fa-solid fa-location-dot me-2"></i>Colombo, Sri Lanka</p>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-uppercase small fw-bold" style="color:var(--cb-orange);">System</h6>
+          <p class="small mb-1"><a class="link-brand" href="admin/index.html">Admin dashboard</a></p>
+          <p class="small mb-0 text-muted-cb">Colors, fonts, images, and branding are placeholders pending Century Burger's brand assets.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/94770000000" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp me-1"></i>WhatsApp</a>
+
+  <!-- Item detail modal -->
+  <div class="modal fade" id="itemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <div class="modal-header border-0 pb-0">
+          <p class="hero-eyebrow mb-0" style="color:var(--cb-orange-dark)">Item Detail + Customization</p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-4">
+            <div class="col-md-5">
+              <div id="itemArt" class="item-modal-art"><span>Preview</span></div>
+            </div>
+            <div class="col-md-7">
+              <h3 id="itemTitle">Century Classic Burger</h3>
+              <p id="itemDesc" class="text-muted-cb">Burger description</p>
+              <h4 id="itemPrice" class="text-primary mb-3">LKR 0</h4>
+              <label class="fw-semibold small d-block mb-2">Size</label>
+              <div class="btn-group mb-3">
+                <input type="radio" class="btn-check" name="size" id="sizeRegular" checked>
+                <label class="btn btn-outline-secondary btn-sm" for="sizeRegular">Regular</label>
+                <input type="radio" class="btn-check" name="size" id="sizeLarge">
+                <label class="btn btn-outline-secondary btn-sm" for="sizeLarge">Large + LKR 350</label>
+              </div>
+              <label class="fw-semibold small d-block mb-2">Add-ons</label>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <input type="checkbox" class="btn-check" id="addonCheese">
+                <label class="btn btn-outline-secondary btn-sm" for="addonCheese">Extra Cheese</label>
+                <input type="checkbox" class="btn-check" id="addonBacon">
+                <label class="btn btn-outline-secondary btn-sm" for="addonBacon">Bacon</label>
+                <input type="checkbox" class="btn-check" id="addonSauce">
+                <label class="btn btn-outline-secondary btn-sm" for="addonSauce">Spicy Sauce</label>
+              </div>
+              <label class="fw-semibold small d-block mb-2">Quantity</label>
+              <div class="d-flex align-items-center gap-2 mb-4">
+                <button class="btn btn-dark btn-sm rounded-circle" style="width:34px;height:34px;">-</button>
+                <b>1</b>
+                <button class="btn btn-dark btn-sm rounded-circle" style="width:34px;height:34px;">+</button>
+              </div>
+              <button id="itemAddBtn" class="btn btn-primary w-100">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
