@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">Century Burger demo logo</title>
+  <desc id="desc">Placeholder burger logo for Century Burger demo.</desc>
+  <rect width="160" height="160" rx="36" fill="#f97316"/>
+  <circle cx="80" cy="80" r="58" fill="#211611" opacity="0.18"/>
+  <path d="M36 73c5-24 27-39 44-39s39 15 44 39H36z" fill="#fff7ed"/>
+  <circle cx="58" cy="54" r="4" fill="#f97316"/>
+  <circle cx="78" cy="48" r="4" fill="#f97316"/>
+  <circle cx="101" cy="56" r="4" fill="#f97316"/>
+  <rect x="31" y="76" width="98" height="10" rx="5" fill="#fbbf24"/>
+  <rect x="34" y="89" width="92" height="16" rx="8" fill="#5b2613"/>
+  <path d="M31 108c10-7 19 7 29 0s19 7 29 0 19 7 40-1v10H31v-9z" fill="#22c55e"/>
+  <path d="M34 120h92v4c0 12-10 22-22 22H56c-12 0-22-10-22-22v-4z" fill="#fff7ed"/>
+</svg>

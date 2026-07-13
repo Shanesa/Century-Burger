@@ -1,4 +1,5 @@
 const money = (value) => `LKR ${value.toLocaleString()}`;
+const assetPath = (path) => path.startsWith('assets/') ? path : `assets/img/${path}`;
 let cart = [
   { ...menuItems[0], qty: 1 },
   { ...menuItems[4], qty: 1 }
@@ -29,7 +30,7 @@ function renderMenu(category = 'All') {
     <div class="col">
       <article class="food-card card h-100 border-0 shadow-sm">
         <button class="food-art" style="--card-color:${item.color}" onclick="openItem(${item.id})">
-          <img src="${item.img}" alt="${item.name}">
+          <img src="${assetPath(item.img)}" alt="${item.name}" onerror="this.src='assets/img/placeholder-food.svg'">
           <span class="art-tag">${item.category}</span>
         </button>
         <div class="card-body d-flex flex-column">
@@ -52,7 +53,7 @@ function openItem(id) {
   document.getElementById('itemDesc').textContent = item.desc;
   document.getElementById('itemPrice').textContent = money(item.price);
   document.getElementById('itemArt').style.setProperty('--card-color', item.color);
-  document.getElementById('itemArt').innerHTML = `<img src="${item.img}" alt="${item.name}"><span class="art-tag">${item.category}</span>`;
+  document.getElementById('itemArt').innerHTML = `<img src="${assetPath(item.img)}" alt="${item.name}" onerror="this.src='assets/img/placeholder-food.svg'"><span class="art-tag">${item.category}</span>`;
   document.getElementById('itemAddBtn').onclick = () => { addToCart(item.id); itemModal.hide(); };
   itemModal.show();
 }
@@ -114,6 +115,21 @@ function setDemoCard(mode) {
   }
 }
 
+/* Hands the order to the admin demo (same browser) so it appears as a
+   new order there — starting it deducts ingredients from inventory. */
+function sendOrderToAdmin(paid) {
+  try {
+    const inbox = JSON.parse(localStorage.getItem('cb_incoming_orders') || '[]');
+    inbox.push({
+      customer: 'Website customer',
+      items: cart.map((line) => ({ id: line.id, qty: line.qty })),
+      type: document.querySelector('input[name="fulfillment"]:checked')?.value === 'Delivery' ? 'Delivery' : 'Pickup',
+      payment: paid ? 'Paid' : 'Unpaid'
+    });
+    localStorage.setItem('cb_incoming_orders', JSON.stringify(inbox));
+  } catch (e) { /* demo only */ }
+}
+
 function placeDemoOrder() {
   const method = document.getElementById('paymentMethod').value;
   const isCard = method.toLowerCase().includes('card');
@@ -129,12 +145,14 @@ function placeDemoOrder() {
     setTimeout(() => {
       result.textContent = 'Demo payment approved. Order created successfully.';
       result.className = 'payment-result rounded-3 p-2 mt-3 mb-0 success';
+      sendOrderToAdmin(true);
       showScreen('tracking');
     }, 450);
     return;
   }
   result.textContent = 'Cash on delivery selected. Order created without card payment.';
   result.className = 'payment-result rounded-3 p-2 mt-3 mb-0 success';
+  sendOrderToAdmin(false);
   showScreen('tracking');
 }
 

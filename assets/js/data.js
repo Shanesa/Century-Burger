@@ -1,3 +1,8 @@
+/* ==========================================================================
+   Century Burger demo data — edit this file to change what the demo shows.
+   Inventory quantities use base units: g (grams), ml, or pcs (pieces).
+   ========================================================================== */
+
 const menuItems = [
   { id: 1, name: 'Century Classic Burger', category: 'Burgers', price: 1450, color: '#c2410c', img: 'assets/img/century-classic-burger.jpg', desc: 'Beef patty, cheddar, lettuce, tomato, pickles, and Century sauce.' },
   { id: 2, name: 'Spicy Volcano Burger', category: 'Burgers', price: 1650, color: '#991b1b', img: 'assets/img/spicy-volcano-burger.jpg', desc: 'Crispy chicken, jalapenos, hot sauce, slaw, and melted cheese.' },
@@ -11,24 +16,47 @@ const menuItems = [
   { id: 10, name: 'Solo Feast Combo', category: 'Combos', price: 2390, color: '#dc2626', img: 'assets/img/solo-feast-combo.jpg', desc: 'One burger, fries, nuggets, and one drink.' }
 ];
 
-const orders = [
-  { id: 'CB-1048', customer: 'Naveen Perera', items: 'Double Smash Burger x2', total: 3900, status: 'Preparing', type: 'Delivery', rider: 'Kasun', time: '12:18 PM', payment: 'Paid' },
-  { id: 'CB-1047', customer: 'Ayesha Fernando', items: 'Family Burger Combo x1', total: 4990, status: 'Out for Delivery', type: 'Delivery', rider: 'Ruwan', time: '12:05 PM', payment: 'Paid' },
-  { id: 'CB-1046', customer: 'Dilan Silva', items: 'Spicy Volcano Burger x1, Iced Milo x1', total: 2200, status: 'Received', type: 'Pickup', rider: '-', time: '11:52 AM', payment: 'Unpaid' },
-  { id: 'CB-1045', customer: 'Tharushi Jay', items: 'Crispy Chicken Burger x2', total: 3100, status: 'Delivered', type: 'Delivery', rider: 'Imran', time: '11:35 AM', payment: 'Paid' },
-  { id: 'CB-1044', customer: 'Sahan Wick', items: 'Solo Feast Combo x1', total: 2390, status: 'Delivered', type: 'Pickup', rider: '-', time: '11:12 AM', payment: 'Paid' },
-  { id: 'CB-1043', customer: 'Minali K', items: 'Loaded Fries x2, Lime Mojito x2', total: 3200, status: 'Delivered', type: 'Delivery', rider: 'Kasun', time: '10:58 AM', payment: 'Paid' }
+/* ---- Ingredients the kitchen keeps in stock ------------------------------
+   stock + min are in the base unit shown. The demo shows kg / L automatically
+   when a gram or ml number is 1000 or more. */
+const inventoryData = [
+  { id: 'beef',    name: 'Beef (patty meat)',  stock: 5000,  unit: 'g',   min: 1000,  supplier: 'Colombo Meat Co.' },
+  { id: 'chicken', name: 'Chicken fillets',    stock: 2400,  unit: 'g',   min: 1500,  supplier: 'Colombo Meat Co.' },
+  { id: 'buns',    name: 'Burger buns',        stock: 58,    unit: 'pcs', min: 40,    supplier: 'Fresh Foods Lanka' },
+  { id: 'cheese',  name: 'Cheese slices',      stock: 85,    unit: 'pcs', min: 50,    supplier: 'Fresh Foods Lanka' },
+  { id: 'lettuce', name: 'Lettuce',            stock: 900,   unit: 'g',   min: 1200,  supplier: 'Green Farm' },
+  { id: 'fries',   name: 'French fries',       stock: 22000, unit: 'g',   min: 15000, supplier: 'Fresh Foods Lanka' },
+  { id: 'nuggets', name: 'Chicken nuggets',    stock: 96,    unit: 'pcs', min: 60,    supplier: 'Colombo Meat Co.' },
+  { id: 'sauce',   name: 'House sauce',        stock: 3500,  unit: 'ml',  min: 5000,  supplier: 'Green Farm' },
+  { id: 'milo',    name: 'Milo powder',        stock: 1800,  unit: 'g',   min: 800,   supplier: 'Fresh Foods Lanka' },
+  { id: 'lime',    name: 'Fresh lime',         stock: 40,    unit: 'pcs', min: 25,    supplier: 'Green Farm' },
+  { id: 'cups',    name: 'Drink cups',         stock: 120,   unit: 'pcs', min: 80,    supplier: 'Pack Lanka' }
 ];
 
-const inventory = [
-  { item: 'Burger Buns', stock: 34, unit: 'pcs', min: 40 },
-  { item: 'Beef Patties', stock: 62, unit: 'pcs', min: 30 },
-  { item: 'Chicken Fillets', stock: 18, unit: 'pcs', min: 25 },
-  { item: 'Cheddar Cheese', stock: 85, unit: 'slices', min: 50 },
-  { item: 'Lettuce', stock: 4, unit: 'kg', min: 5 },
-  { item: 'French Fries', stock: 22, unit: 'kg', min: 15 },
-  { item: 'Sauce Mix', stock: 7, unit: 'liters', min: 10 },
-  { item: 'Drink Cups', stock: 120, unit: 'pcs', min: 80 }
+/* ---- Recipes: what one unit of each menu item uses -----------------------
+   Selling 8 Classic Burgers deducts 8 × 100 g beef, 8 buns, and so on. */
+const recipes = {
+  1:  [ { ing: 'beef', qty: 100 }, { ing: 'buns', qty: 1 }, { ing: 'cheese', qty: 1 }, { ing: 'lettuce', qty: 30 }, { ing: 'sauce', qty: 20 } ],
+  2:  [ { ing: 'chicken', qty: 120 }, { ing: 'buns', qty: 1 }, { ing: 'cheese', qty: 1 }, { ing: 'lettuce', qty: 20 }, { ing: 'sauce', qty: 30 } ],
+  3:  [ { ing: 'beef', qty: 200 }, { ing: 'buns', qty: 1 }, { ing: 'cheese', qty: 2 }, { ing: 'sauce', qty: 25 } ],
+  4:  [ { ing: 'chicken', qty: 130 }, { ing: 'buns', qty: 1 }, { ing: 'cheese', qty: 1 }, { ing: 'lettuce', qty: 25 }, { ing: 'sauce', qty: 20 } ],
+  5:  [ { ing: 'fries', qty: 300 }, { ing: 'cheese', qty: 1 }, { ing: 'sauce', qty: 30 } ],
+  6:  [ { ing: 'nuggets', qty: 6 }, { ing: 'sauce', qty: 30 } ],
+  7:  [ { ing: 'milo', qty: 30 }, { ing: 'cups', qty: 1 } ],
+  8:  [ { ing: 'lime', qty: 2 }, { ing: 'cups', qty: 1 } ],
+  9:  [ { ing: 'beef', qty: 200 }, { ing: 'chicken', qty: 250 }, { ing: 'buns', qty: 4 }, { ing: 'cheese', qty: 4 }, { ing: 'lettuce', qty: 100 }, { ing: 'sauce', qty: 130 }, { ing: 'fries', qty: 600 }, { ing: 'cups', qty: 4 }, { ing: 'milo', qty: 60 }, { ing: 'lime', qty: 4 } ],
+  10: [ { ing: 'beef', qty: 100 }, { ing: 'buns', qty: 1 }, { ing: 'cheese', qty: 1 }, { ing: 'fries', qty: 300 }, { ing: 'nuggets', qty: 6 }, { ing: 'sauce', qty: 60 }, { ing: 'cups', qty: 1 }, { ing: 'milo', qty: 30 } ]
+};
+
+/* ---- Orders. items = menu item id + quantity. ----------------------------
+   consumed: true means its ingredients were already taken out of stock. */
+const ordersData = [
+  { id: 'CB-1048', customer: 'Naveen Perera', items: [ { id: 3, qty: 2 } ], status: 'Preparing', type: 'Delivery', rider: 'Kasun', time: '12:18 PM', payment: 'Paid', consumed: true },
+  { id: 'CB-1047', customer: 'Ayesha Fernando', items: [ { id: 9, qty: 1 } ], status: 'Out for Delivery', type: 'Delivery', rider: 'Ruwan', time: '12:05 PM', payment: 'Paid', consumed: true },
+  { id: 'CB-1046', customer: 'Dilan Silva', items: [ { id: 2, qty: 1 }, { id: 7, qty: 1 } ], status: 'Received', type: 'Pickup', rider: '-', time: '11:52 AM', payment: 'Unpaid', consumed: false },
+  { id: 'CB-1045', customer: 'Tharushi Jay', items: [ { id: 4, qty: 2 } ], status: 'Delivered', type: 'Delivery', rider: 'Imran', time: '11:35 AM', payment: 'Paid', consumed: true },
+  { id: 'CB-1044', customer: 'Sahan Wick', items: [ { id: 10, qty: 1 } ], status: 'Delivered', type: 'Pickup', rider: '-', time: '11:12 AM', payment: 'Paid', consumed: true },
+  { id: 'CB-1043', customer: 'Minali K', items: [ { id: 5, qty: 2 }, { id: 8, qty: 2 } ], status: 'Delivered', type: 'Delivery', rider: 'Kasun', time: '10:58 AM', payment: 'Paid', consumed: true }
 ];
 
 const riders = [
@@ -37,13 +65,13 @@ const riders = [
   { name: 'Imran Hassan', phone: '071 777 2020', status: 'Available', deliveries: 5 }
 ];
 
-const purchases = [
-  { supplier: 'Fresh Foods Lanka', item: 'Burger Buns', qty: '100 pcs', cost: 12500, date: '2026-07-07', status: 'Paid' },
-  { supplier: 'Colombo Meat Co.', item: 'Beef Patties', qty: '80 pcs', cost: 48000, date: '2026-07-06', status: 'Paid' },
-  { supplier: 'Green Farm', item: 'Lettuce', qty: '10 kg', cost: 6800, date: '2026-07-05', status: 'Pending' }
+const purchasesData = [
+  { supplier: 'Fresh Foods Lanka', ing: 'buns', qty: 100, cost: 12500, date: '2026-07-07', status: 'Paid' },
+  { supplier: 'Colombo Meat Co.', ing: 'beef', qty: 5000, cost: 48000, date: '2026-07-06', status: 'Paid' },
+  { supplier: 'Green Farm', ing: 'lettuce', qty: 10000, cost: 6800, date: '2026-07-05', status: 'Pending' }
 ];
 
-const expenses = [
+const expensesData = [
   { category: 'Packaging', amount: 8400, date: '2026-07-07', note: 'Burger boxes and paper bags' },
   { category: 'Utilities', amount: 12500, date: '2026-07-06', note: 'Electricity bill' },
   { category: 'Marketing', amount: 15000, date: '2026-07-05', note: 'Social media promotion' },

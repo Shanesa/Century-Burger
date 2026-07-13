@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Century Burger | Admin System</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,16 +21,7 @@
       <div class="d-flex align-items-center justify-content-between mb-4">
         <a href="../index.html" class="sidebar-brand d-flex align-items-center gap-2">
           <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width:40px;height:40px;background:var(--cb-orange)">
-            <svg viewBox="0 0 40 40" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18a14 9 0 0 1 28 0z" fill="#fff8ef"/>
-              <circle cx="14" cy="12" r="1.3" fill="#fff8ef"/>
-              <circle cx="20" cy="10" r="1.3" fill="#fff8ef"/>
-              <circle cx="26" cy="12" r="1.3" fill="#fff8ef"/>
-              <rect x="5" y="18.5" width="30" height="3" rx="1.2" fill="#fbbf24"/>
-              <rect x="5" y="22" width="30" height="4" fill="#5b2613"/>
-              <rect x="5" y="26.5" width="30" height="2.6" rx="1.2" fill="#22c55e"/>
-              <path d="M5 29.5h30v1.5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="#fff8ef"/>
-            </svg>
+            <img src="../assets/img/century-burger-logo.svg" alt="Century Burger demo logo" width="28" height="28">
           </span>
           <span>
             <strong class="d-block">Century Burger</strong>
@@ -40,24 +32,28 @@
       </div>
 
       <nav class="nav flex-column gap-1">
-        <span class="nav-section-label mt-1 mb-1 px-2">Operations</span>
+        <span class="nav-section-label mt-1 mb-1 px-2">Daily work</span>
         <a class="nav-link active" href="#dashboard" data-view="dashboard"><i class="fa-solid fa-gauge-high me-2"></i>Dashboard</a>
-        <a class="nav-link" href="#orders" data-view="orders"><i class="fa-solid fa-receipt me-2"></i>Orders</a>
+        <a class="nav-link" href="#pos" data-view="pos"><i class="fa-solid fa-cash-register me-2"></i>Sell (POS)</a>
+        <a class="nav-link" href="#orders" data-view="orders"><i class="fa-solid fa-receipt me-2"></i>Orders <span class="nav-count" id="navOrderCount"></span></a>
         <a class="nav-link" href="#riders" data-view="riders"><i class="fa-solid fa-motorcycle me-2"></i>Riders</a>
 
-        <span class="nav-section-label mt-3 mb-1 px-2">Stock</span>
-        <a class="nav-link" href="#inventory" data-view="inventory"><i class="fa-solid fa-boxes-stacked me-2"></i>Inventory</a>
-        <a class="nav-link" href="#purchasing" data-view="purchasing"><i class="fa-solid fa-truck-fast me-2"></i>Purchasing</a>
+        <span class="nav-section-label mt-3 mb-1 px-2">Kitchen stock</span>
+        <a class="nav-link" href="#inventory" data-view="inventory"><i class="fa-solid fa-boxes-stacked me-2"></i>Inventory <span class="nav-count warn" id="navLowCount"></span></a>
+        <a class="nav-link" href="#purchasing" data-view="purchasing"><i class="fa-solid fa-truck-fast me-2"></i>Buy stock</a>
 
-        <span class="nav-section-label mt-3 mb-1 px-2">Finance</span>
+        <span class="nav-section-label mt-3 mb-1 px-2">Money</span>
         <a class="nav-link" href="#expenses" data-view="expenses"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Expenses</a>
         <a class="nav-link" href="#invoices" data-view="invoices"><i class="fa-solid fa-file-invoice me-2"></i>Invoices</a>
         <a class="nav-link" href="#reports" data-view="reports"><i class="fa-solid fa-chart-line me-2"></i>Reports</a>
       </nav>
 
       <div class="mt-auto pt-3 border-top border-secondary-subtle">
-        <a href="../index.html" class="nav-link"><i class="fa-solid fa-arrow-left me-2"></i>View Storefront</a>
-        <span class="demo-badge d-inline-block mt-2">Demo Mode</span>
+        <a href="../index.html" class="nav-link"><i class="fa-solid fa-arrow-left me-2"></i>View customer site</a>
+        <div class="d-flex align-items-center gap-2 mt-2">
+          <span class="demo-badge d-inline-block">Demo Mode</span>
+          <button class="btn btn-sm btn-outline-light border-0 text-white-50" id="resetDemo" title="Put all demo numbers back to the start"><i class="fa-solid fa-rotate-left me-1"></i>Reset</button>
+        </div>
       </div>
     </aside>
 
@@ -70,16 +66,15 @@
           </button>
           <div>
             <p class="page-title mb-0" id="pageTitle">Dashboard</p>
-            <span class="small text-muted-cb d-none d-sm-block" id="pageSubtitle">Restaurant overview</span>
+            <span class="small text-muted-cb d-none d-sm-block" id="pageSubtitle">How the restaurant is doing today</span>
           </div>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <input type="search" class="form-control cb-search d-none d-md-block" placeholder="Search orders, items...">
-          <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <button class="icon-btn" id="alertBell" title="Stock alerts"><i class="fa-regular fa-bell"></i><span class="dot" id="bellDot"></span></button>
           <div class="dropdown">
             <button class="btn btn-light border d-flex align-items-center gap-2 rounded-pill" data-bs-toggle="dropdown">
               <span class="avatar-circle" style="width:32px;height:32px;font-size:.75rem;">AD</span>
-              <span class="d-none d-md-inline small fw-semibold">Admin</span>
+              <span class="d-none d-md-inline small fw-semibold">Owner</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
@@ -93,18 +88,15 @@
 
       <main class="p-3 p-lg-4">
 
-        <!-- Dashboard -->
+        <!-- ============ Dashboard ============ -->
         <section id="dashboard" class="admin-view active">
-          <div class="alert alert-danger d-flex align-items-center gap-2 rounded-4" role="alert">
-            <i class="fa-solid fa-triangle-exclamation fs-5"></i>
-            <div><strong>Low stock alert:</strong> Burger Buns, Chicken Fillets, Lettuce, and Sauce Mix need restocking.</div>
-          </div>
+          <div id="stockAlertBox"></div>
           <div class="row g-3 mb-4" id="statCards"></div>
           <div class="row g-3">
             <div class="col-lg-7">
               <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h6 class="mb-0">Recent Orders</h6>
+                  <h6 class="mb-0">Recent orders</h6>
                   <a href="#orders" data-view="orders" class="small link-brand">View all</a>
                 </div>
                 <div class="table-responsive">
@@ -117,35 +109,71 @@
             </div>
             <div class="col-lg-5">
               <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
-                <h6 class="mb-2">Sales This Week</h6>
+                <h6 class="mb-0">Sales this week</h6>
+                <span class="small text-muted-cb d-block mb-2">Money that came in each day</span>
                 <canvas id="dashboardChart" height="200"></canvas>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Orders -->
+        <!-- ============ Sell (POS) ============ -->
+        <section id="pos" class="admin-view">
+          <div class="pos-cats mb-3" id="posCats">
+            <button class="pos-cat active" data-pos-cat="All">All</button>
+            <button class="pos-cat" data-pos-cat="Burgers">Burgers</button>
+            <button class="pos-cat" data-pos-cat="Sides">Sides</button>
+            <button class="pos-cat" data-pos-cat="Drinks">Drinks</button>
+            <button class="pos-cat" data-pos-cat="Combos">Combos</button>
+          </div>
+          <div class="row g-3">
+            <div class="col-lg-8">
+              <div class="pos-grid" id="posGrid"></div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card border-0 shadow-sm rounded-4 p-3 pos-ticket" id="posTicketPanel">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="mb-0">This order</h6>
+                  <button class="btn btn-link btn-sm text-danger p-0 fw-semibold" id="posClear">Clear</button>
+                </div>
+                <div id="posTicket"></div>
+                <div class="pos-total d-flex justify-content-between align-items-center">
+                  <span>Total</span><strong id="posTotal">LKR 0</strong>
+                </div>
+                <button class="btn btn-success btn-lg w-100 mt-2 pos-pay" id="posPay">
+                  <i class="fa-solid fa-money-bill-wave me-2"></i>Take payment
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Orders ============ -->
         <section id="orders" class="admin-view">
+          <div class="help-strip mb-3">
+            <i class="fa-solid fa-lightbulb"></i>
+            <div>When you press <strong>Start preparing</strong>, the ingredients for that order are taken out of stock automatically. You can see the change on the Inventory page.</div>
+          </div>
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <div class="btn-group flex-wrap" id="orderFilters">
               <button class="btn btn-outline-secondary btn-sm active" data-status="All">All</button>
-              <button class="btn btn-outline-secondary btn-sm" data-status="Received">Received</button>
+              <button class="btn btn-outline-secondary btn-sm" data-status="Received">New</button>
               <button class="btn btn-outline-secondary btn-sm" data-status="Preparing">Preparing</button>
-              <button class="btn btn-outline-secondary btn-sm" data-status="Out for Delivery">Out for Delivery</button>
-              <button class="btn btn-outline-secondary btn-sm" data-status="Delivered">Delivered</button>
+              <button class="btn btn-outline-secondary btn-sm" data-status="Out for Delivery">On the road</button>
+              <button class="btn btn-outline-secondary btn-sm" data-status="Delivered">Done</button>
             </div>
           </div>
           <div class="card border-0 shadow-sm rounded-4 p-3">
             <div class="table-responsive">
               <table class="table align-middle mb-0">
-                <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Assign Rider</th></tr></thead>
+                <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Next step</th></tr></thead>
                 <tbody id="ordersTable"></tbody>
               </table>
             </div>
           </div>
         </section>
 
-        <!-- Riders -->
+        <!-- ============ Riders ============ -->
         <section id="riders" class="admin-view">
           <div class="card border-0 shadow-sm rounded-4 p-3">
             <div class="table-responsive">
@@ -157,44 +185,110 @@
           </div>
         </section>
 
-        <!-- Inventory -->
+        <!-- ============ Inventory ============ -->
         <section id="inventory" class="admin-view">
-          <div class="alert rounded-4" style="background:var(--cb-charcoal);color:#ffe7d2;" role="alert">
-            <i class="fa-solid fa-circle-info me-2"></i>Demo concept: completing one Double Smash Burger order would deduct buns, patties, cheese, lettuce, and sauce automatically.
+
+          <div class="row g-3 mb-3" id="invStats"></div>
+
+          <!-- Signature: the stock story simulator -->
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 sim-card">
+            <div class="p-3 p-lg-4">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="sim-chip"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>Try it</span>
+                <h6 class="mb-0">See how stock goes down when you sell</h6>
+              </div>
+              <p class="small text-muted-cb mb-3">Pick an item and how many you sold. The maths below updates live — nothing changes until you press the button.</p>
+              <div class="row g-2 align-items-end mb-3" style="max-width:520px;">
+                <div class="col-7">
+                  <label class="form-label small fw-semibold mb-1" for="simProduct">Menu item</label>
+                  <select class="form-select" id="simProduct"></select>
+                </div>
+                <div class="col-5">
+                  <label class="form-label small fw-semibold mb-1" for="simQty">How many sold?</label>
+                  <div class="input-group">
+                    <button class="btn btn-outline-secondary" type="button" id="simMinus">−</button>
+                    <input type="number" class="form-control text-center" id="simQty" value="8" min="1" max="500">
+                    <button class="btn btn-outline-secondary" type="button" id="simPlus">+</button>
+                  </div>
+                </div>
+              </div>
+              <div id="simResult"></div>
+              <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+                <button class="btn btn-primary" id="simApply"><i class="fa-solid fa-cash-register me-2"></i>Record this sale</button>
+                <span class="small text-muted-cb" id="simApplyHint"></span>
+              </div>
+            </div>
           </div>
-          <div class="card border-0 shadow-sm rounded-4 p-3">
+
+          <!-- Ingredient list -->
+          <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+              <div>
+                <h6 class="mb-0">What's in your kitchen</h6>
+                <span class="small text-muted-cb">Green is fine, amber is running low, red is finished.</span>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <input type="search" class="form-control form-control-sm" id="invSearch" placeholder="Find an ingredient..." style="width:190px;">
+                <div class="btn-group" id="invFilters">
+                  <button class="btn btn-outline-secondary btn-sm active" data-inv-filter="All">All</button>
+                  <button class="btn btn-outline-secondary btn-sm" data-inv-filter="Low">Running low</button>
+                  <button class="btn btn-outline-secondary btn-sm" data-inv-filter="Out">Finished</button>
+                </div>
+              </div>
+            </div>
             <div class="table-responsive">
-              <table class="table align-middle mb-0">
-                <thead><tr><th>Ingredient</th><th>Stock</th><th style="width:160px;">Level</th><th>Unit</th><th>Min</th><th>Status</th></tr></thead>
+              <table class="table align-middle mb-0 inv-table">
+                <thead><tr><th>Ingredient</th><th>In stock now</th><th style="min-width:180px;">Stock level</th><th>Alert me below</th><th>Status</th><th class="text-end">Add stock</th></tr></thead>
                 <tbody id="inventoryTable"></tbody>
               </table>
             </div>
           </div>
+
+          <div class="row g-3">
+            <!-- Recipes -->
+            <div class="col-lg-6">
+              <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                <h6 class="mb-0">Recipes — what each item uses</h6>
+                <span class="small text-muted-cb d-block mb-3">This is how the system knows what to deduct. One sale = one set of these.</span>
+                <select class="form-select mb-3" id="recipeProduct"></select>
+                <div id="recipeList"></div>
+              </div>
+            </div>
+            <!-- Activity -->
+            <div class="col-lg-6">
+              <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                <h6 class="mb-0">Stock activity</h6>
+                <span class="small text-muted-cb d-block mb-3">Every time stock goes in or out, it shows here.</span>
+                <div id="stockActivity" class="activity-feed"></div>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <!-- Purchasing -->
+        <!-- ============ Purchasing ============ -->
         <section id="purchasing" class="admin-view">
           <div class="row g-3">
             <div class="col-lg-4">
               <div class="card border-0 shadow-sm rounded-4 p-3">
-                <h6 class="mb-3">Log a Restock</h6>
-                <label class="small fw-semibold">Supplier</label>
-                <input class="form-control mb-2" value="Fresh Foods Lanka">
-                <label class="small fw-semibold">Item</label>
-                <input class="form-control mb-2" value="Burger Buns">
-                <label class="small fw-semibold">Quantity</label>
-                <input class="form-control mb-2" value="100 pcs">
-                <label class="small fw-semibold">Cost (LKR)</label>
-                <input class="form-control mb-3" value="12500">
-                <button type="button" class="btn btn-primary w-100">Add Restock</button>
+                <h6 class="mb-0">Buy stock</h6>
+                <span class="small text-muted-cb d-block mb-3">When new stock arrives, record it here. It is added to your inventory straight away.</span>
+                <label class="small fw-semibold" for="poIngredient">Ingredient</label>
+                <select class="form-select mb-2" id="poIngredient"></select>
+                <label class="small fw-semibold" for="poQty">How much? <span class="text-muted-cb fw-normal" id="poUnitHint"></span></label>
+                <input class="form-control mb-2" type="number" id="poQty" value="5000" min="1">
+                <label class="small fw-semibold" for="poSupplier">Supplier</label>
+                <input class="form-control mb-2" id="poSupplier" value="Colombo Meat Co.">
+                <label class="small fw-semibold" for="poCost">Cost (LKR)</label>
+                <input class="form-control mb-3" type="number" id="poCost" value="48000" min="0">
+                <button type="button" class="btn btn-primary w-100" id="poAdd"><i class="fa-solid fa-plus me-1"></i>Add to stock</button>
               </div>
             </div>
             <div class="col-lg-8">
               <div class="card border-0 shadow-sm rounded-4 p-3">
-                <h6 class="mb-2">Recent Purchases</h6>
+                <h6 class="mb-2">Recent purchases</h6>
                 <div class="table-responsive">
                   <table class="table align-middle mb-0">
-                    <thead><tr><th>Supplier</th><th>Item</th><th>Qty</th><th>Cost</th><th>Date</th><th>Payment</th></tr></thead>
+                    <thead><tr><th>Supplier</th><th>Ingredient</th><th>Amount</th><th>Cost</th><th>Date</th><th>Payment</th></tr></thead>
                     <tbody id="purchaseTable"></tbody>
                   </table>
                 </div>
@@ -203,25 +297,30 @@
           </div>
         </section>
 
-        <!-- Expenses -->
+        <!-- ============ Expenses ============ -->
         <section id="expenses" class="admin-view">
           <div class="row g-3 mb-3" id="expenseStats"></div>
           <div class="row g-3">
             <div class="col-lg-4">
               <div class="card border-0 shadow-sm rounded-4 p-3">
-                <h6 class="mb-3">Add Expense</h6>
-                <label class="small fw-semibold">Category</label>
-                <input class="form-control mb-2" value="Packaging">
-                <label class="small fw-semibold">Amount (LKR)</label>
-                <input class="form-control mb-2" value="8400">
-                <label class="small fw-semibold">Date</label>
-                <input type="date" class="form-control mb-3" value="2026-07-07">
-                <button type="button" class="btn btn-primary w-100">Add Expense</button>
+                <h6 class="mb-3">Add expense</h6>
+                <label class="small fw-semibold" for="expCategory">Category</label>
+                <select class="form-select mb-2" id="expCategory">
+                  <option>Packaging</option><option>Utilities</option><option>Marketing</option>
+                  <option>Salary</option><option>Rent</option><option>Delivery</option><option>Other</option>
+                </select>
+                <label class="small fw-semibold" for="expAmount">Amount (LKR)</label>
+                <input class="form-control mb-2" type="number" id="expAmount" value="8400" min="0">
+                <label class="small fw-semibold" for="expDate">Date</label>
+                <input type="date" class="form-control mb-2" id="expDate" value="2026-07-13">
+                <label class="small fw-semibold" for="expNote">Note</label>
+                <input class="form-control mb-3" id="expNote" placeholder="What was this for?">
+                <button type="button" class="btn btn-primary w-100" id="expAdd"><i class="fa-solid fa-plus me-1"></i>Save expense</button>
               </div>
             </div>
             <div class="col-lg-8">
               <div class="card border-0 shadow-sm rounded-4 p-3">
-                <h6 class="mb-2">Expense Records</h6>
+                <h6 class="mb-2">Expense records</h6>
                 <div class="table-responsive">
                   <table class="table align-middle mb-0">
                     <thead><tr><th>Category</th><th>Amount</th><th>Date</th><th>Note</th></tr></thead>
@@ -233,7 +332,7 @@
           </div>
         </section>
 
-        <!-- Invoices -->
+        <!-- ============ Invoices ============ -->
         <section id="invoices" class="admin-view">
           <div class="card border-0 shadow-sm rounded-4 p-3">
             <div class="table-responsive">
@@ -245,19 +344,21 @@
           </div>
         </section>
 
-        <!-- Reports -->
+        <!-- ============ Reports ============ -->
         <section id="reports" class="admin-view">
           <div class="row g-3 mb-3" id="reportStats"></div>
           <div class="row g-3">
             <div class="col-lg-7">
               <div class="card border-0 shadow-sm rounded-4 p-3">
-                <h6 class="mb-2">Sales by Day</h6>
+                <h6 class="mb-0">Sales by day</h6>
+                <span class="small text-muted-cb d-block mb-2">Last 7 days</span>
                 <canvas id="salesChart" height="220"></canvas>
               </div>
             </div>
             <div class="col-lg-5">
               <div class="card border-0 shadow-sm rounded-4 p-3">
-                <h6 class="mb-2">Top Selling Items</h6>
+                <h6 class="mb-0">Top selling items</h6>
+                <span class="small text-muted-cb d-block mb-2">Units sold this week</span>
                 <canvas id="topItemsChart" height="220"></canvas>
               </div>
             </div>
@@ -268,19 +369,93 @@
     </div>
   </div>
 
+  <!-- POS bottom bar (phones/tablets) -->
+  <div class="pos-bottom-bar d-lg-none" id="posBottomBar">
+    <div class="lh-sm">
+      <span class="d-block small" id="posBarCount"></span>
+      <strong id="posBarTotal"></strong>
+    </div>
+    <button class="btn btn-success btn-lg" id="posBarPay"><i class="fa-solid fa-money-bill-wave me-2"></i>Pay</button>
+  </div>
+
+  <!-- POS quantity modal: tap item → how many? → add -->
+  <div class="modal fade" id="posQtyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content rounded-4 border-0 text-center">
+        <div class="modal-body p-4">
+          <img id="posQtyImg" class="pos-qty-img" alt="">
+          <h5 id="posQtyName" class="mt-3 mb-0"></h5>
+          <p class="text-muted-cb mb-1" id="posQtyPrice"></p>
+          <p class="small mb-3" id="posQtyAvail"></p>
+          <div class="pos-qty-row">
+            <button class="pos-qty-btn" id="posQtyMinus" aria-label="One less">−</button>
+            <span class="pos-qty-num" id="posQtyNum">1</span>
+            <button class="pos-qty-btn" id="posQtyPlus" aria-label="One more">+</button>
+          </div>
+          <div class="pos-quick mt-3" id="posQuick">
+            <button data-q="2">2</button>
+            <button data-q="5">5</button>
+            <button data-q="10">10</button>
+          </div>
+          <button class="btn btn-primary btn-lg w-100 mt-3" id="posQtyAdd">Add — <span id="posQtyTotal"></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POS receipt modal -->
+  <div class="modal fade" id="receiptModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content rounded-4 border-0">
+        <div class="modal-body p-4">
+          <div class="text-center mb-3">
+            <span class="receipt-check"><i class="fa-solid fa-check"></i></span>
+            <h5 class="mt-2 mb-0">Payment received</h5>
+            <span class="small text-muted-cb">Stock was updated automatically</span>
+          </div>
+          <div id="receiptBody" class="receipt-paper"></div>
+          <button class="btn btn-primary btn-lg w-100 mt-3" data-bs-dismiss="modal"><i class="fa-solid fa-plus me-2"></i>Next customer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add stock modal -->
+  <div class="modal fade" id="stockModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title" id="stockModalTitle">Add stock</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="small text-muted-cb mb-3" id="stockModalCurrent"></p>
+          <label class="small fw-semibold" for="stockModalQty">How much are you adding? <span class="text-muted-cb fw-normal" id="stockModalUnit"></span></label>
+          <input type="number" class="form-control mb-2" id="stockModalQty" value="1000" min="1">
+          <label class="small fw-semibold" for="stockModalNote">Note (optional)</label>
+          <input class="form-control" id="stockModalNote" placeholder="e.g. Morning delivery">
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="stockModalSave"><i class="fa-solid fa-plus me-1"></i>Add stock</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Invoice preview modal -->
   <div class="modal fade" id="invoiceModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0">
         <div class="modal-header border-0 pb-0">
-          <h5 class="modal-title">Invoice Preview</h5>
+          <h5 class="modal-title">Invoice preview</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <div id="invoiceBody" class="invoice-preview"></div>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i>Download PDF Mock</button>
+          <button type="button" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i>Download PDF mock</button>
         </div>
       </div>
     </div>
@@ -300,6 +475,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Toasts -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastZone"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
