@@ -48,21 +48,51 @@ Use this order when presenting the demo to the client.
 This is the recipe-based stock system from the client's
 `Inventory Management Example.pdf`, working live:
 
-1. Open **Inventory**
-2. Show the three cards at the top: Enough stock / Running low / Finished
-3. Use the **"See how stock goes down when you sell"** simulator:
-   - Pick *Century Classic Burger*, set quantity to **8**
-   - Read the beef row out loud: *100 g × 8 = 800 g used · 5 kg − 800 g = 4.2 kg left*
-   - This is exactly the example from the client's PDF
-4. Click **Record this sale** — stock drops instantly, the ingredient table
-   updates, and the sale appears in **Stock activity**
-5. Show the **Recipes** card — this is how the system knows what to deduct
-6. Show the ingredient table: plain badges (Enough / Running low / Finished),
-   level bars, and the per-row **Add** button
-7. Crank the simulator quantity up until an ingredient runs out — the
-   **Record this sale** button disables itself: *out of stock blocks sales*
+Inventory has three big tabs. Walk them left to right:
 
-## 7. Orders Deduct Stock Automatically
+**Tab 1 — "What can we make?"** (the screen the owner will live on)
+
+1. Every food shows a photo and a big number: *we can still make 30*
+2. Tap the Classic Burger — the popup explains it in one glance:
+   each ingredient, what one burger needs, what's left, and a yellow
+   **"Runs out first"** tag on the ingredient that sets the limit
+3. Tap **Add stock** right on that ingredient, type the amount, save —
+   go back to the tile and the number went UP. Say it out loud:
+   *"Lettuce was the problem. We bought lettuce. Now we can make 50."*
+
+**Tab 2 — "Ingredients"** (the traditional list)
+
+4. Enough / Running low / Finished cards, then the full list the
+   traditional way: *58 pcs left, 5 kg left*, level bars, search,
+   and an **Add** button on every row
+5. Below it: the **Recipes** card (how the system knows what to deduct)
+   and the **Stock activity** feed written in plain sentences
+
+**Tab 3 — "Try a sale"** (the teaching card)
+
+6. Pick *Century Classic Burger*, set quantity to **8** and read the beef
+   row out loud: *100 g × 8 = 800 g used · 5 kg − 800 g = 4.2 kg left* —
+   this is exactly the example from the client's PDF
+7. Click **Record this sale** — stock drops instantly everywhere
+8. Crank the quantity up until an ingredient runs out — the button
+   disables itself: *out of stock blocks sales*
+
+## 7. The Touch Till — Sell (POS)
+
+Built for counter staff with zero training. Best shown on a tablet or phone.
+
+1. Open **Sell (POS)** in the sidebar
+2. Say the script out loud as you tap: *"Customer wants ten classic burgers.
+   Tap the burger… tap 10… Add… Take payment. That's it."*
+3. Show the receipt popup — payment received, stock updated automatically
+4. Go to **Inventory** and show the beef went down by 10 × 100 g = 1 kg
+5. Back on the till, point out the smart tiles: when an ingredient runs out,
+   every item that needs it grays out as **Finished** and shows
+   **"Only N left"** warnings before that — staff can never sell food the
+   kitchen can't make
+6. On a phone, show the bottom bar with the running total and Pay button
+
+## 8. Orders Deduct Stock Automatically
 
 - Open **Orders**
 - Find the "New order" from the website and click **Start preparing**
@@ -71,12 +101,12 @@ This is the recipe-based stock system from the client's
   with a "Buy stock" shortcut
 - Walk the order through: Send with rider → Mark delivered
 
-## 8. Buy Stock (Purchasing)
+## 9. Buy Stock (Purchasing)
 
 - Open **Buy stock**, choose an ingredient, enter a quantity, click
   **Add to stock** — inventory goes up immediately and the purchase is logged
 
-## 9. Riders + Finance Screens
+## 10. Riders + Finance Screens
 
 - Open Riders, click "View" on a rider to preview their mobile app screen
 - Open Expenses and add an expense with the form

@@ -188,8 +188,21 @@
         <!-- ============ Inventory ============ -->
         <section id="inventory" class="admin-view">
 
-          <div class="row g-3 mb-3" id="invStats"></div>
+          <!-- Big, simple tabs -->
+          <div class="inv-tabs mb-3" id="invTabs">
+            <button class="inv-tab active" data-inv-tab="make"><i class="fa-solid fa-burger me-2"></i>What can we make?</button>
+            <button class="inv-tab" data-inv-tab="stock"><i class="fa-solid fa-boxes-stacked me-2"></i>Ingredients</button>
+            <button class="inv-tab" data-inv-tab="try"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Try a sale</button>
+          </div>
 
+          <!-- Tab 1: What can we make? -->
+          <div class="inv-pane active" id="invPaneMake">
+            <p class="small text-muted-cb mb-3">The number on each food shows how many we can still make with today's stock. Tap a food to see why, and to add stock.</p>
+            <div class="pos-grid" id="makeGrid"></div>
+          </div>
+
+          <!-- Tab 3: Try a sale (simulator) -->
+          <div class="inv-pane" id="invPaneTry">
           <!-- Signature: the stock story simulator -->
           <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 sim-card">
             <div class="p-3 p-lg-4">
@@ -219,6 +232,13 @@
               </div>
             </div>
           </div>
+
+          </div>
+
+          <!-- Tab 2: Ingredients (traditional list) -->
+          <div class="inv-pane" id="invPaneStock">
+
+          <div class="row g-3 mb-3" id="invStats"></div>
 
           <!-- Ingredient list -->
           <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
@@ -262,6 +282,7 @@
                 <div id="stockActivity" class="activity-feed"></div>
               </div>
             </div>
+          </div>
           </div>
         </section>
 
@@ -415,6 +436,28 @@
           </div>
           <div id="receiptBody" class="receipt-paper"></div>
           <button class="btn btn-primary btn-lg w-100 mt-3" data-bs-dismiss="modal"><i class="fa-solid fa-plus me-2"></i>Next customer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- "What can we make" detail modal -->
+  <div class="modal fade" id="makeModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <div class="modal-header border-0 pb-0">
+          <div class="d-flex align-items-center gap-3">
+            <img id="makeModalImg" class="make-modal-img" alt="">
+            <div>
+              <h5 class="modal-title mb-0" id="makeModalName"></h5>
+              <span class="small fw-semibold" id="makeModalCan"></span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="makeModalBody"></div>
+          <p class="small text-muted-cb mb-0 mt-3"><i class="fa-solid fa-circle-info me-1"></i>The lowest ingredient decides how many we can make. Add stock to make more.</p>
         </div>
       </div>
     </div>

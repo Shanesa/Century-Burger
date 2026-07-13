@@ -564,6 +564,87 @@ body {
 }
 .activity-time { font-size: .7rem; color: var(--cb-muted); }
 
+/* ---- Inventory tabs: What can we make? / Ingredients / Try a sale ---- */
+.inv-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.inv-tab {
+  border: 1px solid var(--cb-line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: .92rem;
+  min-height: 48px;
+  color: var(--cb-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.inv-tab.active {
+  background: var(--cb-ink);
+  border-color: var(--cb-ink);
+  color: #fff;
+}
+.inv-pane { display: none; }
+.inv-pane.active { display: block; }
+
+/* "We can still make N" line on food tiles */
+.make-line {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 4px;
+}
+.make-num {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.make-line.ok .make-num { color: #166534; }
+.make-line.low .make-num { color: #b45309; }
+.make-line.out .make-num { color: var(--cb-red); }
+.make-cap {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--cb-muted);
+  line-height: 1.15;
+}
+.make-tile.soldout { opacity: .8; filter: grayscale(.7); }
+
+/* Rows in the "why" popup */
+.make-modal-img {
+  width: 58px; height: 58px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.make-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--cb-line);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  background: var(--cb-paper);
+}
+.make-row.limit {
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+.make-row .btn { min-height: 44px; }
+.make-tag {
+  font-size: .66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  border-radius: 999px;
+  padding: .25em .7em;
+  background: #fde68a;
+  color: #78350f;
+}
+.make-tag.out { background: #fecaca; color: #991b1b; }
+
 /* ---- Sell (POS): touch-first till ---- */
 .pos-cats {
   display: flex;

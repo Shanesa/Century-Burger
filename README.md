@@ -72,7 +72,8 @@ Colors, fonts, images, and branding are placeholders until Century Burger provid
 - Live order tracking: Checkout → Tracking screen
 - Rider management: Admin → Orders (assign rider) and Admin → Riders (rider list + app preview)
 - Admin dashboard: Admin → Dashboard
-- Inventory management: Admin → Inventory (ingredient list, level bars, add-stock modal, search + filters)
+- Counter sales (POS): Admin → Sell (POS) — touch-first till: tap a food photo, pick a quantity, take payment. Records the sale, prints a mock receipt, and deducts ingredients through the same recipe engine. Sold-out items gray out automatically; "Only N left" warnings appear when ingredients run low; phones get a fixed total + Pay bar
+- Inventory management: Admin → Inventory, three touch-sized tabs: "What can we make?" (food photos with a big how-many-can-we-still-make number; tap for the per-ingredient explanation with a "Runs out first" tag and inline Add stock), "Ingredients" (traditional list — pcs/kg left, level bars, search, add-stock modal), and "Try a sale" (the deduction simulator)
 - Automatic ingredient consumption: working in the demo — every menu item has a recipe in `data.js`; starting an order (or using the "See how stock goes down" simulator) deducts qty × recipe from stock. Out-of-stock ingredients block the sale until stock is added. State persists in localStorage; the sidebar Reset button restores defaults.
 - Low stock alerts: live Dashboard alert listing the actual low/finished ingredients, bell dot, sidebar counter, and Inventory highlighting
 - Purchasing management: Admin → Purchasing

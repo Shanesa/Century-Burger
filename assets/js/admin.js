@@ -225,6 +225,7 @@ function refreshAll() {
   renderOrders();
   renderInventoryStats();
   renderInventory();
+  renderMakeGrid();
   renderPOS();
   renderSimulator();
   renderRecipe();
@@ -476,6 +477,69 @@ function saveStockModal() {
   refreshAll();
 }
 
+/* ---------------- Inventory tab 1: "What can we make?" ----------------
+   The friendly view: each food shows how many we can still make.
+   Tap it to see which ingredient runs out first and add stock. */
+
+let makeModal;
+
+function renderMakeGrid() {
+  const grid = document.getElementById('makeGrid');
+  if (!grid) return;
+  grid.innerHTML = menuItems.map((item) => {
+    const can = canMake(item.id);
+    const tone = can <= 0 ? 'out' : can <= 10 ? 'low' : 'ok';
+    const caption = can <= 0 ? 'Can\'t make — add stock' : 'we can still make';
+    return `
+      <button class="pos-tile make-tile ${can <= 0 ? 'soldout' : ''}" onclick="openMakeDetail(${item.id})">
+        <span class="pos-tile-art">
+          <img src="${posImg(item)}" alt="${item.name}" onerror="this.src='../assets/img/placeholder-food.svg'">
+        </span>
+        <span class="pos-tile-body">
+          <span class="pos-tile-name">${item.name}</span>
+          <span class="make-line ${tone}">
+            <span class="make-num">${can <= 0 ? '0' : can}</span>
+            <span class="make-cap">${caption}</span>
+          </span>
+        </span>
+      </button>
+    `;
+  }).join('');
+}
+
+function openMakeDetail(itemId) {
+  const item = getItem(itemId);
+  const recipe = recipes[itemId] || [];
+  const can = canMake(itemId);
+  const possibles = recipe.map((r) => ({ r, possible: Math.floor((getIng(r.ing)?.stock || 0) / r.qty) }));
+  const minPossible = Math.min(...possibles.map((p) => p.possible));
+
+  document.getElementById('makeModalImg').src = posImg(item);
+  document.getElementById('makeModalName').textContent = item.name;
+  const canEl = document.getElementById('makeModalCan');
+  canEl.textContent = can <= 0 ? 'We can\'t make this right now' : `We can still make ${can}`;
+  canEl.className = `small fw-semibold ${can <= 0 ? 'text-danger' : can <= 10 ? 'text-warning-cb' : 'text-success'}`;
+
+  document.getElementById('makeModalBody').innerHTML = possibles.map(({ r, possible }) => {
+    const ing = getIng(r.ing);
+    const isLimit = possible === minPossible;
+    const finished = ing.stock <= 0;
+    return `
+      <div class="make-row ${isLimit ? 'limit' : ''}">
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center gap-2">
+            <strong>${ing.name}</strong>
+            ${finished ? '<span class="make-tag out">Finished</span>' : isLimit ? '<span class="make-tag">Runs out first</span>' : ''}
+          </div>
+          <span class="small text-muted-cb">Needs ${fmtQty(r.qty, ing.unit)} each · we have ${fmtQty(ing.stock, ing.unit)} — enough for ${possible}</span>
+        </div>
+        <button class="btn btn-outline-primary btn-sm text-nowrap" onclick="makeModal.hide(); openStockModal('${ing.id}')"><i class="fa-solid fa-plus me-1"></i>Add stock</button>
+      </div>
+    `;
+  }).join('');
+  makeModal.show();
+}
+
 /* ---------------- Render: simulator (the "try it" card) ---------------- */
 
 function renderSimulator() {
@@ -540,17 +604,18 @@ function applySimulator() {
 
 const posImg = (item) => `../${item.img}`;
 
-/* How many of this item the kitchen can still make, counting what is
-   already on the ticket. */
-function posCanMake(itemId) {
+/* How many of this item the kitchen can still make. `pending` subtracts
+   ingredients already promised (e.g. the POS ticket). */
+function canMake(itemId, pending = {}) {
   const recipe = recipes[itemId] || [];
   if (!recipe.length) return 99;
-  const pending = usageFor(posTicket);
   return Math.max(0, Math.min(...recipe.map((r) => {
     const left = (getIng(r.ing)?.stock || 0) - (pending[r.ing] || 0);
     return Math.floor(left / r.qty);
   })));
 }
+
+const posCanMake = (itemId) => canMake(itemId, usageFor(posTicket));
 
 const posTicketTotal = () => posTicket.reduce((sum, l) => sum + (getItem(l.id)?.price || 0) * l.qty, 0);
 
@@ -895,6 +960,7 @@ function init() {
   stockModal = new bootstrap.Modal(document.getElementById('stockModal'));
   posQtyModal = new bootstrap.Modal(document.getElementById('posQtyModal'));
   receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+  makeModal = new bootstrap.Modal(document.getElementById('makeModal'));
   sidebarOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('sidebar'));
 
   document.querySelectorAll('[data-view]').forEach((link) => link.addEventListener('click', (event) => {
@@ -917,6 +983,13 @@ function init() {
   }));
 
   document.getElementById('invSearch').addEventListener('input', renderInventory);
+
+  document.querySelectorAll('#invTabs .inv-tab').forEach((btn) => btn.addEventListener('click', () => {
+    document.querySelectorAll('#invTabs .inv-tab').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    const pane = { make: 'invPaneMake', stock: 'invPaneStock', try: 'invPaneTry' }[btn.dataset.invTab];
+    document.querySelectorAll('.inv-pane').forEach((p) => p.classList.toggle('active', p.id === pane));
+  }));
 
   document.querySelectorAll('#posCats .pos-cat').forEach((btn) => btn.addEventListener('click', () => {
     document.querySelectorAll('#posCats .pos-cat').forEach((b) => b.classList.remove('active'));
